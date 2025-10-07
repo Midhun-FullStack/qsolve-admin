@@ -7,6 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const logout = () => {
+    authService.logout();
+    setUser(null);
+  };
+
   useEffect(() => {
     const loadUser = async () => {
       if (authService.isAuthenticated()) {
@@ -15,11 +20,11 @@ export const AuthProvider = ({ children }) => {
           if (userData.role === 'admin') {
             setUser(userData);
           } else {
-            authService.logout();
+            logout();
           }
         } catch (error) {
           console.error('Auth error:', error);
-          authService.logout();
+          logout();
         }
       }
       setLoading(false);
@@ -28,22 +33,29 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
+  useEffect(() => {
+    const handleLogout = () => {
+      logout();
+    };
+
+    window.addEventListener('auth:logout', handleLogout);
+
+    return () => {
+      window.removeEventListener('auth:logout', handleLogout);
+    };
+  }, []);
+
   const login = async (email, password) => {
     const data = await authService.login(email, password);
     const userData = await authService.getProfile();
     
     if (userData.role !== 'admin') {
-      authService.logout();
+      logout();
       throw new Error('Access denied. Admin privileges required.');
     }
     
     setUser(userData);
     return data;
-  };
-
-  const logout = () => {
-    authService.logout();
-    setUser(null);
   };
 
   return (

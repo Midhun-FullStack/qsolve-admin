@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Login from './components/auth/Login';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import Navbar from './components/common/Navbar';
 import Sidebar from './components/common/Sidebar';
 import DashboardHome from './components/dashboard/DashboardHome';
@@ -63,7 +64,10 @@ function AppPreview() {
       <BrowserRouter>
         <AuthProvider>
           <ToastProvider>
-            <PreviewLayout />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/*" element={<ProtectedRoute><PreviewLayout /></ProtectedRoute>} />
+            </Routes>
           </ToastProvider>
         </AuthProvider>
       </BrowserRouter>
