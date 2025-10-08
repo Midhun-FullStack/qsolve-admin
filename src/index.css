@@ -42,3 +42,26 @@ body {
   border: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+/* Global form canvas defaults: ensure forms render on a white background with dark text
+   This helps fix transparency/dark-theme bleed that made inputs look black or unreadable. */
+form,
+.form-container,
+.form-white,
+.card-body {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.form-control,
+.form-select,
+textarea.form-control {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+/* Small helper: keep small file inputs readable */
+.form-control[type="file"] {
+  background-color: transparent !important;
+  color: #212529 !important;
+}

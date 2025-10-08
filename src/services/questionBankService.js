@@ -12,20 +12,14 @@ export const questionBankService = {
   },
 
   createQuestionBank: async (formData) => {
-    const response = await api.post('/question-banks/create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // Let the browser set the Content-Type (with boundary) when sending FormData
+    const response = await api.post('/question-banks/create', formData);
     return response.data;
   },
 
   updateQuestionBank: async (id, formData) => {
-    const response = await api.put(`/question-banks/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // Let the browser set the Content-Type header for FormData
+    const response = await api.put(`/question-banks/${id}`, formData);
     return response.data;
   },
 

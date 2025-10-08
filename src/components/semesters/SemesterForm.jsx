@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { semesterService } from '../../services/semesterService';
 import Modal from '../common/Modal';
@@ -6,6 +7,7 @@ import Modal from '../common/Modal';
 const SemesterForm = ({ isOpen, onClose, semester }) => {
   const [semesterName, setSemesterName] = useState('');
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (semester) {
@@ -52,7 +54,7 @@ const SemesterForm = ({ isOpen, onClose, semester }) => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control bg-white text-dark"
             id="semester"
             value={semesterName}
             onChange={(e) => setSemesterName(e.target.value)}

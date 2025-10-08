@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { questionBankService } from '../../services/questionBankService';
 import { subjectService } from '../../services/subjectService';
@@ -15,6 +16,7 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
   });
   const [file, setFile] = useState(null);
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   const { data: subjects = [] } = useQuery({
     queryKey: ['subjects'],
@@ -57,6 +59,15 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    // Validate file type when present
+    if (file) {
+      const allowed = ['application/pdf'];
+      if (!allowed.includes(file.type)) {
+        showToast('Only PDF files are allowed', 'error');
+        return;
+      }
+    }
+
     const submitData = new FormData();
     submitData.append('title', formData.title);
     submitData.append('description', formData.description);
@@ -96,7 +107,7 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control bg-white text-dark"
               id="title"
               name="title"
               value={formData.title}
@@ -110,7 +121,7 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
               Description *
             </label>
             <textarea
-              className="form-control"
+              className="form-control bg-white text-dark"
               id="description"
               name="description"
               rows="3"
@@ -125,7 +136,7 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
               Semester *
             </label>
             <select
-              className="form-select"
+              className="form-select bg-white text-dark"
               id="semesterID"
               name="semesterID"
               value={formData.semesterID}
@@ -146,7 +157,7 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
               Subject *
             </label>
             <select
-              className="form-select"
+              className="form-select bg-white text-dark"
               id="subjectID"
               name="subjectID"
               value={formData.subjectID}
@@ -168,10 +179,17 @@ const QuestionBankForm = ({ isOpen, onClose, questionBank }) => {
             </label>
             <input
               type="file"
-              className="form-control"
+              className="form-control bg-white text-dark"
               id="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              accept=".pdf,.doc,.docx"
+              onChange={(e) => {
+                const f = e.target.files[0];
+                if (f && f.type !== 'application/pdf') {
+                  showToast('Only PDF files are allowed', 'error');
+                  return;
+                }
+                setFile(f);
+              }}
+              accept=".pdf"
             />
             {questionBank && (
               <small className="text-muted">Leave blank to keep current file</small>

@@ -12,11 +12,15 @@ export const bundleService = {
   },
 
   createBundle: async (bundleData) => {
+    const isFormData = bundleData instanceof FormData;
+    // Let the browser set Content-Type when sending FormData
     const response = await api.post('/bundles/create', bundleData);
     return response.data;
   },
 
   updateBundle: async (id, bundleData) => {
+    const isFormData = bundleData instanceof FormData;
+    // Let the browser set Content-Type when sending FormData
     const response = await api.put(`/bundles/${id}`, bundleData);
     return response.data;
   },

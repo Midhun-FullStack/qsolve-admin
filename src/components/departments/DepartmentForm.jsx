@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { departmentService } from '../../services/departmentService';
 import Modal from '../common/Modal';
@@ -6,6 +7,7 @@ import Modal from '../common/Modal';
 const DepartmentForm = ({ isOpen, onClose, department }) => {
   const [departmentName, setDepartmentName] = useState('');
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (department) {
@@ -52,7 +54,7 @@ const DepartmentForm = ({ isOpen, onClose, department }) => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control bg-white text-dark"
             id="department"
             value={departmentName}
             onChange={(e) => setDepartmentName(e.target.value)}

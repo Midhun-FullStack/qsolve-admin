@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { subjectService } from '../../services/subjectService';
 import Modal from '../common/Modal';
@@ -8,6 +9,7 @@ const SubjectForm = ({ isOpen, onClose, subject }) => {
   const [subjectName, setSubjectName] = useState('');
   const [error, setError] = useState('');
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (subject) {
@@ -73,7 +75,7 @@ const SubjectForm = ({ isOpen, onClose, subject }) => {
             </span>
             <input
               type="text"
-              className={`form-control ${error ? 'is-invalid' : ''}`}
+              className={`form-control bg-white text-dark ${error ? 'is-invalid' : ''}`}
               id="subject"
               value={subjectName}
               onChange={(e) => {

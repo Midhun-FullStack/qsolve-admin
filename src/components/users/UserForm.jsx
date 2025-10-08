@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userService } from '../../services/userService';
 import Modal from '../common/Modal';
@@ -19,6 +20,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
   const [touched, setTouched] = useState({});
 
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -137,7 +139,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
               </span>
               <input
                 type="text"
-                className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                className={`form-control bg-white text-dark ${errors.username ? 'is-invalid' : ''}`}
                 id="username"
                 name="username"
                 value={formData.username}
@@ -164,7 +166,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
               </span>
               <input
                 type="email"
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                className={`form-control bg-white text-dark ${errors.email ? 'is-invalid' : ''}`}
                 id="email"
                 name="email"
                 value={formData.email}
@@ -191,7 +193,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
               </span>
               <input
                 type="text"
-                className="form-control"
+                className="form-control bg-white text-dark"
                 id="firstname"
                 name="firstname"
                 value={formData.firstname}
@@ -211,7 +213,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
               </span>
               <input
                 type="text"
-                className="form-control"
+                className="form-control bg-white text-dark"
                 id="lastname"
                 name="lastname"
                 value={formData.lastname}
@@ -231,7 +233,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
               </span>
               <input
                 type="password"
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                className={`form-control bg-white text-dark ${errors.password ? 'is-invalid' : ''}`}
                 id="password"
                 name="password"
                 value={formData.password}
@@ -260,7 +262,7 @@ const UserForm = ({ isOpen, onClose, user }) => {
                 <Shield size={16} />
               </span>
               <select
-                className="form-select"
+                className="form-select bg-white text-dark"
                 id="role"
                 name="role"
                 value={formData.role}

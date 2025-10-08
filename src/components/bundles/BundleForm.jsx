@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../../context/ToastContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { bundleService } from '../../services/bundleService';
 import { departmentService } from '../../services/departmentService';
@@ -12,7 +13,9 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
     price: '',
     products: [],
   });
+  // ... no file helpers; bundles reference question bank IDs only
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   const { data: departments = [] } = useQuery({
     queryKey: ['departments'],
@@ -53,10 +56,13 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
+    // Bundles only reference existing QuestionBanks (products). Send JSON payload.
     const submitData = {
-      ...formData,
+      title: formData.title,
+      departmentID: formData.departmentID,
       price: Number(formData.price),
+      products: formData.products,
     };
 
     if (bundle) {
@@ -80,6 +86,8 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
     }));
   };
 
+  // Removed file handling functions as bundles should only reference existing QuestionBanks
+
   return (
     <Modal
       isOpen={isOpen}
@@ -95,7 +103,7 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control bg-white text-dark"
               id="title"
               name="title"
               value={formData.title}
@@ -109,7 +117,7 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
               Department *
             </label>
             <select
-              className="form-select"
+              className="form-select bg-white text-dark"
               id="departmentID"
               name="departmentID"
               value={formData.departmentID}
@@ -131,7 +139,7 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
             </label>
             <input
               type="number"
-              className="form-control"
+              className="form-control bg-white text-dark"
               id="price"
               name="price"
               value={formData.price}
@@ -168,6 +176,10 @@ const BundleForm = ({ isOpen, onClose, bundle }) => {
               Selected: {formData.products.length} item(s)
             </small>
           </div>
+
+          {/* Files are uploaded as QuestionBanks in the QuestionBank section.
+              Bundles should only reference those QuestionBanks (products).
+              The file-upload UI was intentionally removed to avoid confusion. */}
         </div>
 
         <div className="d-flex justify-content-end gap-2 mt-4">

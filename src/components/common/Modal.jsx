@@ -32,7 +32,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">{children}</div>
+            <div className={"modal-body form-white"}>{children}</div>
           </div>
         </div>
       </div>

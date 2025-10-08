@@ -32,6 +32,28 @@
   animation: slideDown 0.3s ease-out;
 }
 
+/* Ensure modal content and forms have a white background and dark text so inputs are readable
+   even when the global theme uses dark/transparent panels. */
+.modal-content {
+  background-color: #ffffff; /* white background for forms */
+  color: #212529; /* dark text matching Bootstrap body text */
+  border-radius: 0.25rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.modal-body {
+  background-color: #ffffff;
+  color: #212529;
+  padding: 1rem;
+}
+
+/* Utility class you can add to <form> elements inside modals to force a white canvas */
+.form-white {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
